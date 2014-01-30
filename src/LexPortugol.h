@@ -35,13 +35,67 @@ enum states_t
 	q41,q42,q43,q44,q45,q46,q47,q48	
 };
 
+
+// tem que adicionar tokens aqui..: uneg, dimension..
+// uneg axo q eh o bnot..
 enum token_t	
 { 
-	_algo_ ,_id_, _const_, _verdadeiro_, _falso_ , _sum_, _sub_, _div_, _mod_, _mult_, _bnot_, _ap_, _fp_, _v_, _pp_,
-	_pv_ , _atrib_, _print_, \
-    _read_, _eq_, _leq_, _neq_, _geq_, _gt_,_lt_, _Elogic_, _OUlogic_, _NOTlogic_, _vars_ , _fim_, _fimvar_, _fimse_, \
-	_fimenquanto_, _inicio_, _enquanto_, _faca_ , _se_, _entao_, _senao_, _int_, _real_, _bool_, _char_, _string_, \
-	_intcomp_, _boolcomp_, _charcomp_, _stringcomp_,_realcomp_, _matriz_, _ac_,_fc_ 
+	_algo_ ,
+	_id_,
+	 _const_,
+	 _verdadeiro_,
+	 _falso_ ,
+	 _sum_,
+	 _sub_,
+	 _div_,
+	 _mod_,
+	 _mult_,
+	 _bnot_,
+	 _ap_,
+	 _fp_,
+	 _v_,
+	 _pp_,
+
+	_pv_ ,
+	 _atrib_,
+	 _print_,
+
+    _read_,
+     _eq_,
+     _leq_,
+     _neq_,
+     _geq_,
+     _gt_,
+     _lt_,
+     _Elogic_,
+     _OUlogic_,
+     _NOTlogic_,
+     _vars_ ,
+     _fim_,
+     _fimvar_,
+     _fimse_,
+
+	_fimenquanto_,
+	 _inicio_,
+	 _enquanto_,
+	 _faca_ ,
+	 _se_,
+	 _entao_,
+	 _senao_,
+	 _int_,
+	 _real_,
+	 _bool_,
+	 _char_,
+	 _string_,
+
+	_intcomp_,
+	 _boolcomp_,
+	 _charcomp_,
+	 _stringcomp_,
+	 _realcomp_,
+	 _matriz_,
+	 _ac_,
+	 _fc_ 
 };
 
 //
@@ -50,7 +104,7 @@ class LexPortugol
 	unsigned int lines;
 	unsigned int columns;
 
-	map<string , string> reservedWords;
+	map<string , token_t> reservedWords;
 	
 	string filename;
 
