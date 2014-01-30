@@ -46,6 +46,12 @@ LexPortugol::LexPortugol(char *file)
 	reservedWords.insert(pair<string,token_t>( "não"            , _NOTlogic_		));
 	reservedWords.insert(pair<string,token_t>( "faça"           , _faca_			));
 
+	/*
+	for(map<string,token_t>::iterator x = reservedWords.begin(); x != reservedWords.end(); x++)
+	{
+		cout << x->first << " " << x->second << endl;
+	}*/
+
 }	
 LexPortugol::~LexPortugol()
 {
@@ -77,15 +83,15 @@ token_t LexPortugol::readToken(void)
 	//char ;
 	wchar_t fita;
 	//int i = 0;
-
 	states_t q;
-	token_t t;
+	token_t t = _error_;
 
 	wstring reserved;
 
-	map<string,string>::iterator _r;
+	map<string,token_t>::iterator _r;
 	
 	q = q0;
+	
 	reserved.clear();
 				
 	while(true)
@@ -104,7 +110,8 @@ token_t LexPortugol::readToken(void)
 			else if(fita == L'\n')
 			{
 				lines++;
-				columns = 0;				
+				columns = 0;
+				//putchar('\n');				
 				//break;
 			}
 			else if(fita == L'\t')
@@ -237,7 +244,7 @@ token_t LexPortugol::readToken(void)
 		else if(q == q1)
 		{
 			//cout << "<pv> ";
-			t = _pv_
+			t = _pv_;
 			break;
 		}
 		else if(q == q2)
@@ -954,16 +961,13 @@ token_t LexPortugol::readToken(void)
 		// resolver aqui n tem token dimention
 		else if(q == q48)
 		{
-			cout << "<dimension> ";
+			//cout << "<dimension> ";
 			break;
 		}
-
-
 
 		else if(q == q34)
 		{
 			fita = getwc(_file);
-
 
 			// resolver acentos aqui....
 			if(isalnum(fita) || fita == L'_' || fita == L'á' || fita == L'í' || fita == L'ã' || fita == L'ç' || fita == L'ó'  )	
