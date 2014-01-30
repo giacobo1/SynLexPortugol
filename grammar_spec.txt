@@ -1,0 +1,118 @@
+G = (N, T, P, prog)
+
+N = 
+{
+	
+}
+
+T = 
+{
+	// todos os tokens
+}
+
+P = 
+{
+	prog	->	<algo> <id> <pv> Dec <inicio> Command <fim>,
+
+	Dec 	->	<vars> <id> IdList <pp> Tipo DecList <fimvar> | vazio,
+
+	IdList	->	<v><id> IdList | vazio,
+
+	Tipo 	->	<int> <pv>			|
+				<real> <pv> 		|
+				<char> <pv> 		|
+				<string> <pv> 		|
+				<bool> <pv> 		|
+				<dimension> CompTipo,
+
+	CompTipo	->	<intcomp> <pv>		|
+					<realcomp> <pv>		|
+					<stringcomp> <pv> 	|
+					<boolcomp> <pv>,
+
+	DecList	->	<id> IdList <pp> Tipo DecList | vazio,
+
+	Comand 	->	<id> Lvalue <pv> Comand 							|
+				<print> <ap> Args <fp> <pv> Comand 					|
+				<enquanto> E0 <faca> Comand <fimenquanto> Comand 	|
+				<se> E0 <entao> Comand Else <fimse> Comand 			|
+				vazio,
+
+	Lvalue	->	<read><ap><fp>		|
+				<ac> E0 <fc>Lvalue	|
+				<atrib> E0,
+
+	Args 	->	<id> Arglist | <const> Arglist, 
+	// ver, talvez os argumentos de print possam ser uma expressao. = pode
+
+	Arglist	->	<v>Args | vazio,
+
+	Else	->	<senao> Comand | vazio,
+
+	E0		-> E1 Q,
+
+	Q		-> X | vazio,
+
+	X		->	<eq> 	E1 X'	|
+				<neq>	E1 X'	|
+				<lt> 	E1 X'	|
+				<gt> 	E1 X'	|
+				<leq> 	E1 X'	|
+				<geq> 	E1 X'	,
+
+	X'		->	X | vazio,
+
+	E1 		->	E2 K,
+	K		->	Y | vazio,
+
+	Y		->	<Elogic>	E2 Y'	|
+				<OUlogic>	E2 Y'	,
+
+	Y'		->	Y | vazio,
+
+	E2		->	<NOTlogic>	E3	| E3,
+
+	E3		->	E4 G,
+
+	G 		->	W | vazio,
+
+	W		->	<sum>	E4 W'	|
+				<sub>	E4 W',
+
+	W'		-> W | vazio
+
+
+	E4		-> E5 U
+
+	U		-> Z | vazio
+
+	Z 		->	<mult>	E5 Z'	|
+				<mod>	E5 Z'	|
+				<div>	E5 Z'	,
+
+	Z'		->	Z | vazio
+
+
+	E5	->	<id>B 			|
+			<const>			|
+			<false>			|
+			<verdadeiro>
+			<ap> E0 <fp> 	,
+
+
+	B 	-> <ac> E0 <fc> | vazio
+
+
+
+
+
+
+
+
+
+					
+
+
+	
+
+	
