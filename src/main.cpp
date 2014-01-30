@@ -1,14 +1,27 @@
 #include "SynLexPortugol.h"
 
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 
 	setlocale(LC_CTYPE, "");
 
 	if(argc == 2)
 	{
-		printf("Ok!\n");
+		LexPortugol lex(argv[1]);
+
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		printf("%d\n ",lex.readToken() );
+		//if(x != _error_)printf("%d ",x );
+		
 	}
 	else
 	{
