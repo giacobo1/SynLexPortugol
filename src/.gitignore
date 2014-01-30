@@ -1,3 +1,4 @@
-src/*[o]
-src/SynAnalizer
-src/*[txt]
+*[o]
+SynAnalizer
+*[txt]
+teste.cpp
