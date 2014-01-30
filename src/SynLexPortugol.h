@@ -1,10 +1,6 @@
 #ifndef SYNLEXPORTUGOL_H
 #define SYNLEXPORTUGOL_H
-
-
-#include <cstdio>
-#include <cstdlib>
-
+#include "LexPortugol.h"
 
 
 #endif

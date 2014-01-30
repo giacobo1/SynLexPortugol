@@ -1,7 +1,6 @@
 #include "SynLexPortugol.h"
 
 
-
 int main(int argc, char const *argv[])
 {
 
@@ -9,7 +8,7 @@ int main(int argc, char const *argv[])
 
 	if(argc == 2)
 	{
-		printf("Ok!");
+		printf("Ok!\n");
 	}
 	else
 	{
