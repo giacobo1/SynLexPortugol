@@ -1,0 +1,43 @@
+algoritmo testa_tudo_jessus;
+	variáveis
+		estafera : inteiro;
+		minhabir: caractere;
+		chus: literal;
+		really:real;
+		ofcourse:lógico;
+		_fromhell666 : matriz[10][23] de reais;
+		matanza24_x: matriz[3000][2222][23][2] de lógicos;
+		vetor: matriz[10] de inteiros;
+		xuxa: matriz[24][24] de literais;
+	fimvariáveis 
+	
+	
+início
+
+	se (xuxa <> carlos) ou ((xuxu % 23.3) = 0)então
+		enquanto xuxa <= 3 faça
+			xuxa := xuxa + 0c00233;
+		fimenquanto
+	senão
+		se really entao
+			chus := "hello World!";
+		senão
+			matanza24_x := leia();
+		fimse
+	fimse
+
+	imprima(xuxa[1],"matou o gato",_fromhell666 + 33%24);						 
+
+	se x = verdadeiro então
+		imprima(24,"tch!#");
+	
+	
+	senão 
+		se x = falso então
+			enquanto não(estafera - 0x3fa) faça
+				estafera := estafera * 0c2;
+			fimenquanto
+		fimse
+	fimse				
+
+fim 
