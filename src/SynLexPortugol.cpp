@@ -286,6 +286,8 @@ bool SynLexPortugol::comand(void)
 
 		if(currentToken == _ap_)
 		{
+			// se pa le um token aqui pro e0
+			currentToken = readToken();
 			if(!args())
 			{
 				printf("Erro Sintatico\n");
@@ -310,6 +312,7 @@ bool SynLexPortugol::comand(void)
 	else if(currentToken == _enquanto_)
 	{
 		// se der godo posso ler o token aqui
+		currentToken = readToken();
 		if(!e0())
 		{
 			printf("Erro Sintatico\n");
@@ -338,6 +341,7 @@ bool SynLexPortugol::comand(void)
 	else if(currentToken == _se_)
 	{
 		// se der godo posso ler o token aqui
+		currentToken = readToken();
 		if(!e0())
 		{
 			printf("Erro Sintatico\n");
@@ -445,6 +449,8 @@ bool SynLexPortugol::argList(void)
 
 	if(currentToken == _v_)
 	{
+		// se pa le um token aqui pro e0
+		currentToken = readToken();
 		return args();
 	}
 	else
@@ -455,11 +461,380 @@ bool SynLexPortugol::argList(void)
 }
 bool SynLexPortugol::Else(void)
 {
+	currentToken = readToken();
 
+	if(currentToken == _senao_)
+	{
+		return comand();
+	}
+	else
+		return true;
+
+	return false;
 }
 
+// ============================
 
 bool SynLexPortugol::e0(void)
 {
+	if(!e1())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	else 
+		return q();
 
+	return false;
+}
+
+bool SynLexPortugol::q(void)
+{
+	if(!x())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	
+	return true;
+
+
+}
+bool SynLexPortugol::x(void)
+{
+	// nao sei se tem que ler o token...
+	//currentToken = readToken();	
+	
+	if(currentToken == _eq_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+
+	}
+	else if(currentToken == _neq_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+
+	}
+	else if(currentToken == _lt_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+
+	}
+	else if(currentToken == _gt_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+	}
+	else if(currentToken == _leq_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+	}
+	else if(currentToken == _geq_)
+	{
+		if(!e1())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else
+			return x_();
+	}
+
+	return true;
+	
+
+}
+bool SynLexPortugol::x_(void)
+{
+	currentToken = readToken();
+
+	if(!x())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+		
+	return true;
+}
+
+bool SynLexPortugol::e1(void)
+{
+	if(!e2())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	else 
+		return k();
+
+	return true;
+}
+bool SynLexPortugol::k(void)
+{
+	if(!y())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	
+	return true;
+}
+bool SynLexPortugol::y(void)
+{
+	if(currentToken == _Elogic_)
+	{
+		if(!e2())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return y_();
+	}
+	else if(currentToken == _OUlogic_)
+	{
+		if(!e2())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return y_();
+	}
+
+	return true;
+}
+bool SynLexPortugol::y_(void)
+{	
+	currentToken = readToken();
+
+	if(!y())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+		
+	return true;
+}
+
+// axo q o uneg vem aqui..
+bool SynLexPortugol::e2(void)
+{
+	if(currentToken == _NOTlogic_)
+	{
+		currentToken = readToken();
+
+		return e3();
+	}
+	else
+		return e3();
+
+	return false;
+}
+
+bool SynLexPortugol::e3(void)
+{
+	if(!e4())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	else 
+		return g();
+
+	return false;
+}
+bool SynLexPortugol::g(void)
+{
+	if(!w())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	
+	return true;
+}
+bool SynLexPortugol::w(void)
+{
+	if(currentToken == _sum_)
+	{
+		if(!e4())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return w_();
+	}
+	else if(currentToken == _sub_)
+	{
+		if(!e4())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return w_();
+	}
+
+	return true;
+}
+bool SynLexPortugol::w_(void)
+{
+
+	currentToken = readToken();
+
+	if(!w())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+		
+	return true;
+}
+
+bool SynLexPortugol::e4(void)
+{
+	if(!e5())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	else 
+		return u();
+
+	return false;
+}
+bool SynLexPortugol::u(void)
+{
+	if(!z())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	
+	return true;
+}
+bool SynLexPortugol::z(void)
+{
+	if(currentToken == _sum_)
+	{
+		if(!e5())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return z_();
+	}
+	else if(currentToken == _sub_)
+	{
+		if(!e5())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else 
+			return z_();
+	}
+
+	return true;
+}
+bool SynLexPortugol::z_(void)
+{
+	currentToken = readToken();
+
+	if(!z())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+		
+	return true;
+}
+
+bool SynLexPortugol::e5(void)
+{
+	if (currentToken == _id_)
+	{
+		return b();
+	}
+	if (currentToken == _const_)
+	{
+		return true;
+	}
+	if (currentToken == _falso_)
+	{
+		return true;
+	}
+	if (currentToken == _verdadeiro_)
+	{
+		return true;
+	}
+	if (currentToken == _ap_)
+	{
+		currentToken = readToken();
+
+		if(!e0())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		if(currentToken == _fp_)return true;
+		else
+			return false;
+
+
+	}
+
+	return false;
+}
+bool SynLexPortugol::b(void)
+{
+	if(currentToken == _ac_)
+	{
+		currentToken = readToken();
+
+		if(!e0())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		if(currentToken == _fc_)return true;
+		else
+			return false;
+	}
+
+	return true;
 }
