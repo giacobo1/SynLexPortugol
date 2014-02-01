@@ -1,9 +1,4 @@
-
 #include "LexPortugol.h"
-
-// TODO: talvez trocar os cout's de erro por exceções..
-// TODO: dar uma revisada e finalizar a gramática
-
 
 LexPortugol::LexPortugol(char *file)
 {
