@@ -1,6 +1,8 @@
 // TODO: mais além, arrumar tratamento de erros....
 // TODO: verificar no manual todos so tipos possiveis de matrizes
 
+// aparentemento o e0 ( e, logo, as exps) sempre começam com o token ja lido...
+
 #include "SynLexPortugol.h"
 
 void SynLexPortugol::analise(void)
@@ -292,7 +294,7 @@ bool SynLexPortugol::comand(void)
 		}
 		else
 			return false;
-		// talvez saindo do args n leia o nextoken.. 
+		// talvez saindo do args n leia o nextoken.. mas axo q n
 		if(currentToken == _fp_)
 		{
 			currentToken = readToken();
@@ -307,6 +309,7 @@ bool SynLexPortugol::comand(void)
 	}
 	else if(currentToken == _enquanto_)
 	{
+		// se der godo posso ler o token aqui
 		if(!e0())
 		{
 			printf("Erro Sintatico\n");
@@ -334,6 +337,7 @@ bool SynLexPortugol::comand(void)
 	}
 	else if(currentToken == _se_)
 	{
+		// se der godo posso ler o token aqui
 		if(!e0())
 		{
 			printf("Erro Sintatico\n");
@@ -424,10 +428,29 @@ bool SynLexPortugol::rValue(void)
 }
 bool SynLexPortugol::args(void)
 {
+	if(!e0())
+	{
+		printf("Erro Sintatico\n");
+		exit(1);
+	}
+	else
+		return argList();
+
+	return false;
 
 }
 bool SynLexPortugol::argList(void)
 {
+	currentToken = readToken();
+
+	if(currentToken == _v_)
+	{
+		return args();
+	}
+	else
+		return true;
+
+	return false;
 
 }
 bool SynLexPortugol::Else(void)
