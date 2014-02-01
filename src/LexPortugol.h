@@ -3,9 +3,9 @@
 	Bacharelado em Ciência da Computação
 	Disciplina de Linguagens Formais.
 
-	Analizador léxico da linguavem portugol.
+	Analizador léxico para linguavem portugol.
 
-	Bruno Giacobo Pinto - 11107588;
+	Bruno Giacobo Pinto - 11107588 - bgpinto@inf.ufpel.edu.br;
 	Évero Signorini - 11108253;
 */
 
@@ -17,12 +17,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <string>
-#include <fstream>
 #include <map>
-#include <cctype>
-#include <cwchar>
-#include <clocale>
-#include <vector>
 
 using namespace std;
 
@@ -35,9 +30,6 @@ enum states_t
 	q41,q42,q43,q44,q45,q46,q47,q48	
 };
 
-
-// tem que adicionar tokens aqui..: uneg, dimension..
-// uneg axo q eh o bnot..
 enum token_t	
 { 
 	_algo_ = 1 ,
@@ -50,7 +42,7 @@ enum token_t
 	_div_,
 	_mod_,
 	_mult_,
-	_bnot_,
+	_uneg_,
 	_ap_,
 	_fp_,
 	_v_,
@@ -93,7 +85,7 @@ enum token_t
 	_charcomp_,
 	_stringcomp_,
 	_realcomp_,
-	_matriz_,
+	_dimension_,
 	_ac_,
 	_fc_,
 	_error_ 
@@ -107,11 +99,7 @@ class LexPortugol
 
 	map<string , token_t> reservedWords;
 	
-	string filename;
-
-	FILE *_file;
-
-	string convertWstring(wstring ws);	
+	FILE *_file;	
 
 public:
 
@@ -123,7 +111,4 @@ public:
 
 	token_t readToken(void);	
 };
-
-	
-
 #endif
