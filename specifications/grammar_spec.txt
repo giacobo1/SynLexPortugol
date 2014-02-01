@@ -38,11 +38,12 @@ P =
 				<se> E0 <entao> Comand Else <fimse> Comand 			|
 				vazio,
 
-	Lvalue	->	<read><ap><fp>		|
-				<ac> E0 <fc>Lvalue	|
-				<atrib> E0,
+	Lvalue	->	<ac> E0 <fc>Lvalue	|
+				<atrib> Rvalue,
 
-	Args 	->	<id> Arglist | <const> Arglist, 
+	Rvalue	-> <read><ap><fp> | E0,					
+
+	Args 	->	E0 Arglist, 
 	// ver, talvez os argumentos de print possam ser uma expressao. = pode
 
 	Arglist	->	<v>Args | vazio,

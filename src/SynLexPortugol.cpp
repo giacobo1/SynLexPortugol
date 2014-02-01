@@ -42,10 +42,7 @@ void SynLexPortugol::prog(void)
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
-	}
-
-
-	/*
+	}	
 	
 	if(!comand())
 	{
@@ -57,7 +54,7 @@ void SynLexPortugol::prog(void)
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
-	}*/
+	}
 
 	printf("Analise realizada com sucesso!!!\n");
 }
@@ -257,4 +254,189 @@ bool SynLexPortugol::compTipo(void)
 		else
 			return false;
 	}	
+}
+
+
+bool SynLexPortugol::comand(void)
+{
+	printf("comand\n");
+	currentToken = readToken();
+
+	if(currentToken == _id_)
+	{
+		if(!lValue())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		// talvez o lvalue retorne sem lser o proximo token
+		currentToken = readToken();
+		if(currentToken == _pv_)
+		{
+			return comand();
+		}
+		else
+			return false;
+	}
+	else if(currentToken == _print_)
+	{
+		currentToken = readToken();
+
+		if(currentToken == _ap_)
+		{
+			if(!args())
+			{
+				printf("Erro Sintatico\n");
+				exit(1);
+			}
+		}
+		else
+			return false;
+		// talvez saindo do args n leia o nextoken.. 
+		if(currentToken == _fp_)
+		{
+			currentToken = readToken();
+			if(currentToken == _pv_)
+			{
+				return comand();
+			}
+			else
+				return false;
+
+		}
+	}
+	else if(currentToken == _enquanto_)
+	{
+		if(!e0())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		// verificar tb se dps de sair de e0 tem q ler o nextoken..
+		if(currentToken == _faca_)
+		{
+			if(!comand())
+			{
+				printf("Erro Sintatico\n");
+				exit(1);
+			}
+
+			if(currentToken == _fimenquanto_)
+			{
+				return comand();
+			}
+			else
+				return false;
+
+		}
+
+	}
+	else if(currentToken == _se_)
+	{
+		if(!e0())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		if(currentToken == _entao_)
+		{
+			return comand();
+		}
+		else
+			return false;
+
+		if(!Else())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		if(currentToken == _fimse_)
+		{
+			return comand();
+		}
+		else
+			return false;
+	}
+	else 
+		return true;
+
+	return false;
+}
+bool SynLexPortugol::lValue(void)
+{
+
+	printf("lValue\n");
+
+	currentToken = readToken();
+
+	if(currentToken == _ac_)
+	{
+		if(!e0())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+
+		if(currentToken == _fc_)
+		{
+			return lValue();
+		}
+		else
+			return false;
+	}
+	else if(currentToken == _atrib_)
+	{
+		return rValue();
+	}
+	
+	return false;
+	
+
+}
+
+bool SynLexPortugol::rValue(void)
+{
+
+	printf("rValue\n");
+	currentToken = readToken();
+
+	if(currentToken == _read_)
+	{
+		currentToken = readToken();
+
+		if(currentToken == _ap_)
+		{
+			currentToken = readToken();
+
+			if(currentToken == _fp_)return true;
+			else
+				return false;
+		}
+		else 
+			return false;
+	}
+	// cuidar aqui aqui ja leu um token...
+	else
+		return e0();	
+}
+bool SynLexPortugol::args(void)
+{
+
+}
+bool SynLexPortugol::argList(void)
+{
+
+}
+bool SynLexPortugol::Else(void)
+{
+
+}
+
+
+bool SynLexPortugol::e0(void)
+{
+
 }

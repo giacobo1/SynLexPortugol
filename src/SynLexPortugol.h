@@ -16,7 +16,7 @@ class SynLexPortugol : public LexPortugol
 public:
 	SynLexPortugol(char *file):LexPortugol(file)
 	{
-		vazio = false;
+		//vazio = false;
 		currentToken = _error_;
 	}
 	~SynLexPortugol(){}
@@ -33,6 +33,13 @@ public:
 	// ainda nao..
 	bool comand(void);
 	bool lValue(void);
+	bool rValue(void);
+	bool args(void);
+	bool argList(void);
+	bool Else(void);
+
+	bool e0(void);
+
 
 };
 
