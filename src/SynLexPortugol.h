@@ -1,10 +1,17 @@
-// TODO: talvez trocar os cout's de erro por exceções..
-// TODO: dar uma revisada e finalizar a gramática
+/*
+	Universidade Federal de Pelotas
+	Bacharelado em Ciência da Computação
+	Disciplina de Linguagens Formais.
+
+	Analizador Sintetico para linguavem portugol.
+
+	Bruno Giacobo Pinto - 11107588 - bgpinto@inf.ufpel.edu.br;
+	Évero Signorini - 11108253;
+*/
 
 #ifndef SYNLEXPORTUGOL_H
 #define SYNLEXPORTUGOL_H
 #include "LexPortugol.h"
-
 
 class SynLexPortugol : public LexPortugol
 {
@@ -19,7 +26,7 @@ public:
 	void analise(void);
 
 
-public:
+private:
 
 
 	token_t currentToken;

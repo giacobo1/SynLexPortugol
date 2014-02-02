@@ -1,5 +1,5 @@
 SynAnalizer: main.o SynLexPortugol.o LexPortugol.o
-	g++ -Wall -O0 main.o SynLexPortugol.o LexPortugol.o -o SynAnalizer
+	g++ -Wall -O3 main.o SynLexPortugol.o LexPortugol.o -o SynAnalizer
 
 LexPortugol.o: LexPortugol.h LexPortugol.cpp
 	g++ -c LexPortugol.cpp

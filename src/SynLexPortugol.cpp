@@ -1,13 +1,3 @@
-// TODO: mais além, arrumar tratamento de erros....
-// TODO: verificar no manual todos so tipos possiveis de matrizes
-
-// TODO: problema com contagem de colunas.. axo q qnd reconhece o token no sintatico tem
-// q zerar 
-// TODO: arrumar uneg.. e testar mais
-
-// TODO: nao ta pegando alguns erros lexicos.. nao ta pegando caracter estranho no meio de IDS
-
-
 #include "SynLexPortugol.h"
 
 void SynLexPortugol::analise(void)
@@ -40,7 +30,7 @@ void SynLexPortugol::prog(void)
 	
 	if(!dec())
 	{
-		//printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
+		printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 		exit(1);
 	}
 
@@ -65,13 +55,19 @@ void SynLexPortugol::prog(void)
 		exit(1);
 	}
 
-	printf("Analise realizada com sucesso!!!\n");
+	
+
+	system("clear");
+	printf(
+		"%s\n\n\t\t\t\t\t\t\tAnalise Sintatica realizada com sucesso!!!\n%s\n",
+			"________________________________________________________________________________________________________________________________________________",
+			"________________________________________________________________________________________________________________________________________________"
+		);
 }
 
 
 bool SynLexPortugol::dec(void)
 {
-	printf("dec\n" );
 	currentToken = readToken();
 	
 	if(currentToken == _vars_)
@@ -130,7 +126,6 @@ bool SynLexPortugol::dec(void)
 }
 bool SynLexPortugol::decList(void)
 {
-	printf("decList\n" );
 	currentToken = readToken();
 	
 	if(currentToken == _id_)
@@ -155,7 +150,6 @@ bool SynLexPortugol::decList(void)
 }
 bool SynLexPortugol::idList(void)
 {
-	printf("idList\n" );
 	currentToken = readToken();
 	if(currentToken == _v_)
 	{
@@ -173,7 +167,6 @@ bool SynLexPortugol::idList(void)
 }	
 bool SynLexPortugol::tipo(void)
 {
-	printf("tipo\n" );
 	currentToken = readToken();
 	
 	if(currentToken == _int_)
@@ -241,7 +234,6 @@ bool SynLexPortugol::tipo(void)
 }	
 bool SynLexPortugol::compTipo(void)
 {
-	printf("compTipo\n" );
 	currentToken = readToken();
 	
 	if(currentToken == _intcomp_)
@@ -295,7 +287,6 @@ bool SynLexPortugol::compTipo(void)
 
 bool SynLexPortugol::comand(void)
 {
-	printf("comand\n");
 	currentToken = readToken();
 	
 	if(currentToken == _id_)
@@ -306,8 +297,6 @@ bool SynLexPortugol::comand(void)
 			exit(1);
 		}
 		
-		printf("%d\n",currentToken );
-
 		if(currentToken == _pv_)
 		{
 			return comand();
@@ -421,7 +410,6 @@ bool SynLexPortugol::comand(void)
 
 		if(currentToken == _fimse_)
 		{
-			printf("li um fimse\n");
 			return comand();
 		}
 		else
@@ -435,9 +423,6 @@ bool SynLexPortugol::comand(void)
 }
 bool SynLexPortugol::lValue(void)
 {
-
-	printf("lValue\n");
-
 	currentToken = readToken();
 	
 	if(currentToken == _ac_)
@@ -470,7 +455,6 @@ bool SynLexPortugol::lValue(void)
 bool SynLexPortugol::rValue(void)
 {
 
-	printf("rValue\n");
 	currentToken = readToken();
 	
 	if(currentToken == _read_)
@@ -521,9 +505,7 @@ bool SynLexPortugol::argList(void)
 
 }
 bool SynLexPortugol::Else(void)
-{
-	printf("to no else b1tch\n");
-
+{	
 	if(currentToken == _senao_)
 	{
 		return comand();
@@ -532,11 +514,8 @@ bool SynLexPortugol::Else(void)
 		return true;
 }
 
-// ============================
-
 bool SynLexPortugol::e0(void)
 {
-	printf("e0 - %d\n",currentToken );
 	if(!e1())
 	{
 		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
@@ -551,7 +530,6 @@ bool SynLexPortugol::x(void)
 	
 	if(currentToken == _eq_)
 	{
-		printf("Entrei no operador igual.\n");
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -563,7 +541,6 @@ bool SynLexPortugol::x(void)
 	else if(currentToken == _neq_)
 	{
 
-		printf("Entrei no operador diferente.\n");
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -575,8 +552,6 @@ bool SynLexPortugol::x(void)
 	}
 	else if(currentToken == _lt_)
 	{
-
-		printf("Entrei no operador menor que.\n");
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -588,8 +563,7 @@ bool SynLexPortugol::x(void)
 	}
 	else if(currentToken == _gt_)
 	{
-
-		printf("Entrei no operador maior que.\n");
+	
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -601,7 +575,6 @@ bool SynLexPortugol::x(void)
 	else if(currentToken == _leq_)
 	{
 
-		printf("Entrei no operador menor igual.\n");
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -613,7 +586,6 @@ bool SynLexPortugol::x(void)
 	else if(currentToken == _geq_)
 	{
 
-		printf("Entrei no operador maior igual.\n");
 		currentToken = readToken();
 		if(!e1())
 		{
@@ -629,7 +601,6 @@ bool SynLexPortugol::x(void)
 
 bool SynLexPortugol::e1(void)
 {
-	printf("e1 - %d\n",currentToken );
 	if(!e2())
 	{
 		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
@@ -645,7 +616,6 @@ bool SynLexPortugol::y(void)
 	if(currentToken == _Elogic_)
 	{
 
-		printf("Entrei no operador AND logico.\n");
 		currentToken = readToken();
 		
 		if(!e2())
@@ -658,7 +628,6 @@ bool SynLexPortugol::y(void)
 	else if(currentToken == _OUlogic_)
 	{
 
-		printf("Entrei no operador OU logico.\n");
 		currentToken = readToken();
 		
 		if(!e2())
@@ -671,13 +640,16 @@ bool SynLexPortugol::y(void)
 	else return true;
 }
 
-// axo q o uneg vem aqui..
 bool SynLexPortugol::e2(void)
 {
-	printf("e2 - %d\n",currentToken );
 	if(currentToken == _NOTlogic_)
 	{
-		printf("Entrei no operador NOT logico.\n");
+		currentToken = readToken();
+		
+		return e3();
+	}
+	if(currentToken == _uneg_)
+	{
 		currentToken = readToken();
 		
 		return e3();
@@ -689,7 +661,6 @@ bool SynLexPortugol::e2(void)
 
 bool SynLexPortugol::e3(void)
 {
-	printf("e3 - %d\n",currentToken );
 	if(!e4())
 	{
 		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
@@ -706,7 +677,6 @@ bool SynLexPortugol::w(void)
 	if(currentToken == _sum_)
 	{
 
-		printf("Entrei no operador soma.\n");
 		currentToken = readToken();
 		
 		if(!e4())
@@ -719,7 +689,6 @@ bool SynLexPortugol::w(void)
 	}
 	else if(currentToken == _sub_)
 	{
-		printf("Entrei no operador subtracao.\n");
 		currentToken = readToken();
 		
 		if(!e4())
@@ -734,7 +703,6 @@ bool SynLexPortugol::w(void)
 
 bool SynLexPortugol::e4(void)
 {
-	printf("e4 - %d\n",currentToken );
 	if(!e5())
 	{
 		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
@@ -748,7 +716,6 @@ bool SynLexPortugol::z(void)
 {
 	if(currentToken == _mult_)
 	{
-		printf("Entrei no operador multiplicacao.\n");
 		currentToken = readToken();
 		if(!e5())
 		{
@@ -759,7 +726,6 @@ bool SynLexPortugol::z(void)
 	}
 	else if(currentToken == _mod_)
 	{
-		printf("Entrei no operador modulo\n");
 		currentToken = readToken();
 		if(!e5())
 		{
@@ -770,7 +736,6 @@ bool SynLexPortugol::z(void)
 	}
 	else if(currentToken == _div_)
 	{
-		printf("Entrei no operador divisao.\n");
 		currentToken = readToken();
 		if(!e5())
 		{
@@ -784,36 +749,29 @@ bool SynLexPortugol::z(void)
 
 bool SynLexPortugol::e5(void)
 {
-	printf("e5 - %d\n",currentToken );
 	if (currentToken == _id_)
 	{
-		printf("id.\n");
 		currentToken = readToken();
 		return b();
 	}
 	else if (currentToken == _const_)
 	{
-		printf("constante.\n");
 		currentToken = readToken();
 		return true;
 	}
 	else if (currentToken == _falso_)
 	{
-		printf("falso\n");
 		currentToken = readToken();
 		return true;
 	}
 	else if (currentToken == _verdadeiro_)
 	{
-		printf("verdadeiro\n");
 		currentToken = readToken();
 		return true;
 	}
 	else if (currentToken == _ap_)
 	{
 		currentToken = readToken();
-		printf("abre parenteses\n");
-
 		if(!e0())
 		{
 			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
@@ -822,8 +780,6 @@ bool SynLexPortugol::e5(void)
 
 		if(currentToken == _fp_)
 		{
-			printf("fexa parenteses\n");
-
 			currentToken = readToken();
 			return true;
 		}
@@ -838,10 +794,8 @@ bool SynLexPortugol::e5(void)
 
 bool SynLexPortugol::b(void)
 {
-	printf("b - %d\n",currentToken );
 	if(currentToken == _ac_)
 	{
-		printf("abre colchete\n");
 		currentToken = readToken();
 		
 		if(!e0())
@@ -852,7 +806,6 @@ bool SynLexPortugol::b(void)
 
 		if(currentToken == _fc_)
 		{
-			printf("fexa colchete\n");
 			currentToken = readToken();
 
 			if(currentToken == _ac_)
