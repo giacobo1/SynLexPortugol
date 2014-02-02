@@ -36,26 +36,18 @@ public:
 	bool Else(void);
 
 	bool e0(void);
-	bool q(void);
 	bool x(void);
-	bool x_(void);
 
 	bool e1(void);
-	bool k(void);
 	bool y(void);
-	bool y_(void);
 
 	bool e2(void);
 
 	bool e3(void);
-	bool g(void);
 	bool w(void);
-	bool w_(void);
 
 	bool e4(void);
-	bool u(void);
 	bool z(void);
-	bool z_(void);
 
 	bool e5(void);
 	bool b(void);
