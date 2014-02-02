@@ -5,55 +5,63 @@
 // q zerar 
 // TODO: arrumar uneg.. e testar mais
 
+// TODO: nao ta pegando alguns erros lexicos.. nao ta pegando caracter estranho no meio de IDS
+
+
 #include "SynLexPortugol.h"
 
 void SynLexPortugol::analise(void)
 {
-
+	prog();
 }
 void SynLexPortugol::prog(void)
 {
 	
 	if(readToken() != _algo_)
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Token - <algo> faltando.\n",lines,columns);
 		exit(1);
 	}
 
+	
 	if(readToken() != _id_)
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Token - <id> faltando.\n",lines,columns);
 		exit(1);
 	}
 
+	
 	if(readToken() != _pv_)
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Token - <pv> faltando.\n",lines,columns);
 		exit(1);
 	}
 
-
+	
 	if(!dec())
 	{
-		printf("Erro Sintatico\n");
+		//printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 		exit(1);
 	}
 
+	
 	if(currentToken != _inicio_)
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Token - <inicio> faltando.\n",lines,columns);
 		exit(1);
 	}	
 	
+	
 	if(!comand())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 		exit(1);
 	}
 
+	
 	if(currentToken != _fim_)
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Token - <fim> faltando.\n",lines,columns);
 		exit(1);
 	}
 
@@ -65,7 +73,7 @@ bool SynLexPortugol::dec(void)
 {
 	printf("dec\n" );
 	currentToken = readToken();
-
+	
 	if(currentToken == _vars_)
 	{
 		currentToken = readToken();
@@ -74,23 +82,33 @@ bool SynLexPortugol::dec(void)
 		{
 			if(!idList())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 				exit(1);
 			}
+		}
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <id> faltando.\n",lines,columns);
+			exit(1);
 		}
 
 		if(currentToken == _pp_)
 		{
 			if(!tipo())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d]:: Token tipo incorreto.\n",lines,columns);
 				exit(1);
 			}
+		}
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pp> faltando.\n",lines,columns);
+			exit(1);
 		}
 
 		if(!decList())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 			exit(1);
 		}
 
@@ -100,112 +118,119 @@ bool SynLexPortugol::dec(void)
 			return true;
 		}	
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fimvar> faltando.\n",lines,columns);	
+			exit(1);
+		}	
+			
 	}
 	else
 		return true;
-
-	return false; 
+ 
 }
 bool SynLexPortugol::decList(void)
 {
 	printf("decList\n" );
 	currentToken = readToken();
-
+	
 	if(currentToken == _id_)
 	{
 		if(!idList())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 			exit(1);
 		}
-
 		if(currentToken == _pp_)
 		{
 			if(!tipo())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d]:: Token tipo incorreto.\n",lines,columns);
 				exit(1);
 			}
 		}
-
 		return decList();
 	}
 	else
 		return true;
-
-	return false;
-
-
 }
 bool SynLexPortugol::idList(void)
 {
 	printf("idList\n" );
 	currentToken = readToken();
-
 	if(currentToken == _v_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _id_)
-		
-		return idList();
+			return idList();
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <id> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else
 		return true;
-
-	return false;
-
 }	
 bool SynLexPortugol::tipo(void)
 {
 	printf("tipo\n" );
 	currentToken = readToken();
-
+	
 	if(currentToken == _int_)
 	{
 		currentToken = readToken();
-
+		
 		if(currentToken == _pv_)
-			return true;
+			return true;		
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _real_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _char_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _string_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _bool_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _dimension_)
 	{
@@ -218,43 +243,53 @@ bool SynLexPortugol::compTipo(void)
 {
 	printf("compTipo\n" );
 	currentToken = readToken();
-
+	
 	if(currentToken == _intcomp_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _realcomp_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _stringcomp_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _boolcomp_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _pv_)
 			return true;
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}	
+
+	return false;
 }
 
 
@@ -262,16 +297,15 @@ bool SynLexPortugol::comand(void)
 {
 	printf("comand\n");
 	currentToken = readToken();
-
+	
 	if(currentToken == _id_)
 	{
 		if(!lValue())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 			exit(1);
 		}
-		// talvez o lvalue retorne sem lser o proximo token
-		//currentToken = readToken();
+		
 		printf("%d\n",currentToken );
 
 		if(currentToken == _pv_)
@@ -279,25 +313,29 @@ bool SynLexPortugol::comand(void)
 			return comand();
 		}
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _print_)
 	{
 		currentToken = readToken();
-
+		
 		if(currentToken == _ap_)
-		{
-			// se pa le um token aqui pro e0
-			
+		{			
 			if(!args())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 				exit(1);
 			}
 		}
 		else
-			return false;
-		// talvez saindo do args n leia o nextoken.. mas axo q n
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <ap> faltando.\n",lines,columns);
+			exit(1);
+		}
+
 		if(currentToken == _fp_)
 		{
 			currentToken = readToken();
@@ -306,26 +344,31 @@ bool SynLexPortugol::comand(void)
 				return comand();
 			}
 			else
-				return false;
-
+			{
+				printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <pv> faltando.\n",lines,columns);
+				exit(1);
+			}
+		}
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fp> faltando.\n",lines,columns);
+			exit(1);
 		}
 	}
 	else if(currentToken == _enquanto_)
 	{
-		// se der godo posso ler o token aqui
 		currentToken = readToken();
 		if(!e0())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida.\n",lines,columns);
 			exit(1);
 		}
 
-		// verificar tb se dps de sair de e0 tem q ler o nextoken..
 		if(currentToken == _faca_)
 		{
 			if(!comand())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 				exit(1);
 			}
 
@@ -334,18 +377,24 @@ bool SynLexPortugol::comand(void)
 				return comand();
 			}
 			else
-				return false;
-
+			{
+				printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fimenquanto> faltando.\n",lines,columns);
+				exit(1);
+			}
+		}
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <faca> faltando.\n",lines,columns);
+			exit(1);
 		}
 
 	}
 	else if(currentToken == _se_)
 	{
-		// se der godo posso ler o token aqui
 		currentToken = readToken();
 		if(!e0())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 
@@ -353,16 +402,20 @@ bool SynLexPortugol::comand(void)
 		{
 			if(!comand())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 				exit(1);
 			}
 
 			if(!Else())
 			{
-				printf("Erro Sintatico\n");
+				printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 				exit(1);
 			}
-			// talvez aqui tem q ler otro token
+		}
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <entao> faltando.\n",lines,columns);
+			exit(1);
 		}		
 		
 
@@ -372,12 +425,13 @@ bool SynLexPortugol::comand(void)
 			return comand();
 		}
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fimse> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else 
 		return true;
-
-	return false;
 }
 bool SynLexPortugol::lValue(void)
 {
@@ -385,13 +439,13 @@ bool SynLexPortugol::lValue(void)
 	printf("lValue\n");
 
 	currentToken = readToken();
-
+	
 	if(currentToken == _ac_)
 	{
 		currentToken = readToken();
 		if(!e0())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 
@@ -400,7 +454,10 @@ bool SynLexPortugol::lValue(void)
 			return lValue();
 		}
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fc> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else if(currentToken == _atrib_)
 	{
@@ -408,8 +465,6 @@ bool SynLexPortugol::lValue(void)
 	}
 	
 	return false;
-	
-
 }
 
 bool SynLexPortugol::rValue(void)
@@ -417,25 +472,29 @@ bool SynLexPortugol::rValue(void)
 
 	printf("rValue\n");
 	currentToken = readToken();
-
+	
 	if(currentToken == _read_)
 	{
 		currentToken = readToken();
-
 		if(currentToken == _ap_)
 		{
 			currentToken = readToken();
-
 			if(currentToken == _fp_)
 			{
 				currentToken = readToken();
 				return true;
 			}
 			else
-				return false;
+			{
+				printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fp> faltando.\n",lines,columns);
+				exit(1);
+			}
 		}
-		else 
-			return false;
+		else
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <ap> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
 	else
 		return e0();	
@@ -444,10 +503,9 @@ bool SynLexPortugol::rValue(void)
 bool SynLexPortugol::args(void)
 {
 	currentToken = readToken();
-
 	if(!e0())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 		exit(1);
 	}
 	return argList();
@@ -465,7 +523,6 @@ bool SynLexPortugol::argList(void)
 bool SynLexPortugol::Else(void)
 {
 	printf("to no else b1tch\n");
-	//currentToken = readToken();
 
 	if(currentToken == _senao_)
 	{
@@ -473,7 +530,6 @@ bool SynLexPortugol::Else(void)
 	}
 	else
 		return true;
-
 }
 
 // ============================
@@ -483,7 +539,7 @@ bool SynLexPortugol::e0(void)
 	printf("e0 - %d\n",currentToken );
 	if(!e1())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 		exit(1);
 	}
 	
@@ -499,7 +555,7 @@ bool SynLexPortugol::x(void)
 		currentToken = readToken();
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return x();
@@ -511,7 +567,7 @@ bool SynLexPortugol::x(void)
 		currentToken = readToken();
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d].\n",lines,columns);
 			exit(1);
 		}
 		else return x();
@@ -524,7 +580,7 @@ bool SynLexPortugol::x(void)
 		currentToken = readToken();
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return x();
@@ -537,7 +593,7 @@ bool SynLexPortugol::x(void)
 		currentToken = readToken();
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return x();		
@@ -549,7 +605,7 @@ bool SynLexPortugol::x(void)
 		currentToken = readToken();
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return x();		
@@ -559,10 +615,9 @@ bool SynLexPortugol::x(void)
 
 		printf("Entrei no operador maior igual.\n");
 		currentToken = readToken();
-
 		if(!e1())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return x();
@@ -577,7 +632,7 @@ bool SynLexPortugol::e1(void)
 	printf("e1 - %d\n",currentToken );
 	if(!e2())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 		exit(1);
 	}
 	
@@ -592,10 +647,10 @@ bool SynLexPortugol::y(void)
 
 		printf("Entrei no operador AND logico.\n");
 		currentToken = readToken();
-
+		
 		if(!e2())
 		{			
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return y();		
@@ -605,10 +660,10 @@ bool SynLexPortugol::y(void)
 
 		printf("Entrei no operador OU logico.\n");
 		currentToken = readToken();
-
+		
 		if(!e2())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return y();		
@@ -624,7 +679,7 @@ bool SynLexPortugol::e2(void)
 	{
 		printf("Entrei no operador NOT logico.\n");
 		currentToken = readToken();
-
+		
 		return e3();
 	}
 	else
@@ -637,7 +692,7 @@ bool SynLexPortugol::e3(void)
 	printf("e3 - %d\n",currentToken );
 	if(!e4())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 		exit(1);
 	}
 
@@ -653,10 +708,10 @@ bool SynLexPortugol::w(void)
 
 		printf("Entrei no operador soma.\n");
 		currentToken = readToken();
-
+		
 		if(!e4())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return w();		
@@ -666,10 +721,10 @@ bool SynLexPortugol::w(void)
 	{
 		printf("Entrei no operador subtracao.\n");
 		currentToken = readToken();
-
+		
 		if(!e4())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return w();		
@@ -682,7 +737,7 @@ bool SynLexPortugol::e4(void)
 	printf("e4 - %d\n",currentToken );
 	if(!e5())
 	{
-		printf("Erro Sintatico\n");
+		printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 		exit(1);
 	}
 	
@@ -697,18 +752,18 @@ bool SynLexPortugol::z(void)
 		currentToken = readToken();
 		if(!e5())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return z();
 	}
 	else if(currentToken == _mod_)
 	{
-		printf("Entrei no operador modulo.\n");
+		printf("Entrei no operador modulo\n");
 		currentToken = readToken();
 		if(!e5())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return z();		
@@ -719,7 +774,7 @@ bool SynLexPortugol::z(void)
 		currentToken = readToken();
 		if(!e5())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 		else return z();		
@@ -761,7 +816,7 @@ bool SynLexPortugol::e5(void)
 
 		if(!e0())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 
@@ -773,9 +828,12 @@ bool SynLexPortugol::e5(void)
 			return true;
 		}
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fp> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
-
+	else return false;
 }
 
 bool SynLexPortugol::b(void)
@@ -785,10 +843,10 @@ bool SynLexPortugol::b(void)
 	{
 		printf("abre colchete\n");
 		currentToken = readToken();
-
+		
 		if(!e0())
 		{
-			printf("Erro Sintatico\n");
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Expressao invalida\n",lines,columns);
 			exit(1);
 		}
 
@@ -803,10 +861,10 @@ bool SynLexPortugol::b(void)
 				return true;
 		}
 		else
-			return false;
+		{
+			printf("Erro Sintatico na linha [%d] coluna [%d]:: Token <fc> faltando.\n",lines,columns);
+			exit(1);
+		}
 	}
-	else
-	{
-		return true;
-	}
+	else return true;	
 }

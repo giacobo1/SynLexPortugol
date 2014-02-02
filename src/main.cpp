@@ -3,15 +3,11 @@
 
 int main(int argc, char *argv[])
 {
-
 	if(argc == 2)
 	{
 		SynLexPortugol A(argv[1]);
 
-		A.prog();
-
-
-		
+		A.analise();		
 	}
 	else
 	{

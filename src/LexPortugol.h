@@ -94,20 +94,17 @@ enum token_t
 //
 class LexPortugol
 {
-	unsigned int lines;
-	unsigned int columns;
-
 	map<string , token_t> reservedWords;
 	
 	FILE *_file;	
 
 public:
 
+	
+	unsigned int lines;
+	unsigned int columns;
 	LexPortugol(char *file);	
 	~LexPortugol();
-
-	inline unsigned int getColumn(void){return columns;}
-	inline unsigned int getLines(void){return lines;}
 
 	token_t readToken(void);	
 };

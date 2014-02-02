@@ -8,17 +8,21 @@
 
 class SynLexPortugol : public LexPortugol
 {
-	token_t currentToken;
-	bool vazio;
-
+	
 public:
 	SynLexPortugol(char *file):LexPortugol(file)
 	{
-		//vazio = false;
 		currentToken = _error_;
 	}
+
 	~SynLexPortugol(){}
 	void analise(void);
+
+
+public:
+
+
+	token_t currentToken;
 
 	void prog(void);
 	
