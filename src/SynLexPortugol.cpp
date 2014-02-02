@@ -1,7 +1,9 @@
 // TODO: mais além, arrumar tratamento de erros....
 // TODO: verificar no manual todos so tipos possiveis de matrizes
 
-// aparentemento o e0 ( e, logo, as exps) sempre começam com o token ja lido...
+// problema com contagem de colunas.. axo q qnd reconhece o token no sintatico tem
+// q zerar 
+
 
 #include "SynLexPortugol.h"
 
@@ -272,7 +274,9 @@ bool SynLexPortugol::comand(void)
 			exit(1);
 		}
 		// talvez o lvalue retorne sem lser o proximo token
-		currentToken = readToken();
+		//currentToken = readToken();
+		printf("%d\n",currentToken );
+
 		if(currentToken == _pv_)
 		{
 			return comand();
@@ -287,7 +291,7 @@ bool SynLexPortugol::comand(void)
 		if(currentToken == _ap_)
 		{
 			// se pa le um token aqui pro e0
-			currentToken = readToken();
+			
 			if(!args())
 			{
 				printf("Erro Sintatico\n");
@@ -350,19 +354,24 @@ bool SynLexPortugol::comand(void)
 
 		if(currentToken == _entao_)
 		{
-			return comand();
-		}
-		else
-			return false;
+			if(!comand())
+			{
+				printf("Erro Sintatico\n");
+				exit(1);
+			}
 
-		if(!Else())
-		{
-			printf("Erro Sintatico\n");
-			exit(1);
-		}
+			if(!Else())
+			{
+				printf("Erro Sintatico\n");
+				exit(1);
+			}
+			// talvez aqui tem q ler otro token
+		}		
+		
 
 		if(currentToken == _fimse_)
 		{
+			printf("li um fimse\n");
 			return comand();
 		}
 		else
@@ -419,7 +428,11 @@ bool SynLexPortugol::rValue(void)
 		{
 			currentToken = readToken();
 
-			if(currentToken == _fp_)return true;
+			if(currentToken == _fp_)
+			{
+				currentToken = readToken();
+				return true;
+			}
 			else
 				return false;
 		}
@@ -430,38 +443,37 @@ bool SynLexPortugol::rValue(void)
 	else
 		return e0();	
 }
+// acho que temque dar uma olhada nos args
 bool SynLexPortugol::args(void)
 {
+	currentToken = readToken();
+	// acho que ta errado aqui..
 	if(!e0())
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
 	}
-	else
-		return argList();
+	return argList();
 
-	return false;
+	//return false;
 
 }
 bool SynLexPortugol::argList(void)
 {
-	currentToken = readToken();
-
 	if(currentToken == _v_)
 	{
 		// se pa le um token aqui pro e0
-		currentToken = readToken();
+		//currentToken = readToken();
 		return args();
 	}
 	else
 		return true;
 
-	return false;
-
 }
 bool SynLexPortugol::Else(void)
 {
-	currentToken = readToken();
+	printf("to no else b1tch\n");
+	//currentToken = readToken();
 
 	if(currentToken == _senao_)
 	{
@@ -470,24 +482,23 @@ bool SynLexPortugol::Else(void)
 	else
 		return true;
 
-	return false;
 }
 
 // ============================
 
 bool SynLexPortugol::e0(void)
 {
+	printf("e0 - %d\n",currentToken );
 	if(!e1())
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
 	}
-	else 
-		return q();
-
-	return false;
+	
+	return x();
 }
 
+/*
 bool SynLexPortugol::q(void)
 {
 	if(!x())
@@ -498,8 +509,7 @@ bool SynLexPortugol::q(void)
 	
 	return true;
 
-
-}
+}*/
 bool SynLexPortugol::x(void)
 {
 	// nao sei se tem que ler o token...
@@ -507,97 +517,102 @@ bool SynLexPortugol::x(void)
 	
 	if(currentToken == _eq_)
 	{
+		printf("Entrei no operador igual.\n");
+		currentToken = readToken();
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
-
+		else return x();
 	}
 	else if(currentToken == _neq_)
 	{
+
+		printf("Entrei no operador diferente.\n");
+		currentToken = readToken();
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
-
+		else return x();
+		
 	}
 	else if(currentToken == _lt_)
 	{
+
+		printf("Entrei no operador menor que.\n");
+		currentToken = readToken();
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
-
+		else return x();
+		
 	}
 	else if(currentToken == _gt_)
 	{
+
+		printf("Entrei no operador maior que.\n");
+		currentToken = readToken();
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
+		else return x();		
 	}
 	else if(currentToken == _leq_)
 	{
+
+		printf("Entrei no operador menor igual.\n");
+		currentToken = readToken();
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
+		else return x();		
 	}
 	else if(currentToken == _geq_)
 	{
+
+		printf("Entrei no operador maior igual.\n");
+		currentToken = readToken();
+
 		if(!e1())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else
-			return x_();
+		else return x();
+		
 	}
-
-	return true;
-	
-
+	else 
+		return true;
 }
 bool SynLexPortugol::x_(void)
 {
 	currentToken = readToken();
 
-	if(!x())
-	{
-		printf("Erro Sintatico\n");
-		exit(1);
-	}
-		
-	return true;
+	return x();
 }
 
 bool SynLexPortugol::e1(void)
 {
+	printf("e1 - %d\n",currentToken );
 	if(!e2())
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
 	}
-	else 
-		return k();
+	
 
-	return true;
+	return y();
 }
+/*
 bool SynLexPortugol::k(void)
 {
 	if(!y())
@@ -607,50 +622,50 @@ bool SynLexPortugol::k(void)
 	}
 	
 	return true;
-}
+}*/
 bool SynLexPortugol::y(void)
 {
 	if(currentToken == _Elogic_)
 	{
+
+		printf("Entrei no operador AND logico.\n");
+		currentToken = readToken();
+
 		if(!e2())
-		{
+		{			
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return y_();
+		else return y();		
 	}
 	else if(currentToken == _OUlogic_)
 	{
+
+		printf("Entrei no operador OU logico.\n");
+		currentToken = readToken();
+
 		if(!e2())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return y_();
+		else return y();		
 	}
-
-	return true;
+	else return true;
 }
 bool SynLexPortugol::y_(void)
 {	
 	currentToken = readToken();
-
-	if(!y())
-	{
-		printf("Erro Sintatico\n");
-		exit(1);
-	}
-		
-	return true;
+	return y();
 }
 
 // axo q o uneg vem aqui..
 bool SynLexPortugol::e2(void)
 {
+	printf("e2 - %d\n",currentToken );
 	if(currentToken == _NOTlogic_)
 	{
+		printf("Entrei no operador NOT logico.\n");
 		currentToken = readToken();
 
 		return e3();
@@ -658,21 +673,22 @@ bool SynLexPortugol::e2(void)
 	else
 		return e3();
 
-	return false;
+	//return false;
 }
 
 bool SynLexPortugol::e3(void)
 {
+	printf("e3 - %d\n",currentToken );
 	if(!e4())
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
 	}
-	else 
-		return g();
 
-	return false;
+
+	return w();
 }
+/*
 bool SynLexPortugol::g(void)
 {
 	if(!w())
@@ -682,58 +698,55 @@ bool SynLexPortugol::g(void)
 	}
 	
 	return true;
-}
+}*/
 bool SynLexPortugol::w(void)
 {
 	if(currentToken == _sum_)
 	{
+
+		printf("Entrei no operador soma.\n");
+		currentToken = readToken();
+
 		if(!e4())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return w_();
+		else return w();		
+		
 	}
 	else if(currentToken == _sub_)
 	{
+		printf("Entrei no operador subtracao.\n");
+		currentToken = readToken();
+
 		if(!e4())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return w_();
+		else return w();		
 	}
-
-	return true;
+	else return true;
 }
 bool SynLexPortugol::w_(void)
 {
-
 	currentToken = readToken();
-
-	if(!w())
-	{
-		printf("Erro Sintatico\n");
-		exit(1);
-	}
-		
-	return true;
+	return w();
 }
 
 bool SynLexPortugol::e4(void)
 {
+	printf("e4 - %d\n",currentToken );
 	if(!e5())
 	{
 		printf("Erro Sintatico\n");
 		exit(1);
 	}
-	else 
-		return u();
-
-	return false;
+	
+	return z();
 }
+/*
 bool SynLexPortugol::u(void)
 {
 	if(!z())
@@ -743,66 +756,87 @@ bool SynLexPortugol::u(void)
 	}
 	
 	return true;
-}
+}*/
+
 bool SynLexPortugol::z(void)
 {
-	if(currentToken == _sum_)
+	if(currentToken == _mult_)
 	{
+		//printf("entrei na soma\n");
+		printf("Entrei no operador multiplicacao.\n");
+		currentToken = readToken();
 		if(!e5())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return z_();
+		else return z();
 	}
-	else if(currentToken == _sub_)
+	else if(currentToken == _mod_)
 	{
+		printf("Entrei no operador modulo.\n");
+		currentToken = readToken();
 		if(!e5())
 		{
 			printf("Erro Sintatico\n");
 			exit(1);
 		}
-		else 
-			return z_();
+		else return z();		
 	}
-
-	return true;
+	else if(currentToken == _div_)
+	{
+		printf("Entrei no operador divisao.\n");
+		currentToken = readToken();
+		if(!e5())
+		{
+			printf("Erro Sintatico\n");
+			exit(1);
+		}
+		else return z();		
+	}
+	else return true;
 }
 bool SynLexPortugol::z_(void)
-{
+{	
 	currentToken = readToken();
 
-	if(!z())
-	{
-		printf("Erro Sintatico\n");
-		exit(1);
-	}
-		
-	return true;
+	return z();
 }
 
 bool SynLexPortugol::e5(void)
 {
+	printf("e5 - %d\n",currentToken );
 	if (currentToken == _id_)
 	{
+		printf("id.\n");
+		currentToken = readToken();
 		return b();
 	}
-	if (currentToken == _const_)
+	else if (currentToken == _const_)
 	{
+		//printf("entrei\n");
+		printf("constante.\n");
+
+		currentToken = readToken();
+		//printf("%d\n",currentToken );
 		return true;
 	}
-	if (currentToken == _falso_)
+	else if (currentToken == _falso_)
 	{
+		printf("falso\n");
+		currentToken = readToken();
 		return true;
 	}
-	if (currentToken == _verdadeiro_)
+	else if (currentToken == _verdadeiro_)
 	{
+		printf("verdadeiro\n");
+		currentToken = readToken();
 		return true;
 	}
-	if (currentToken == _ap_)
+	else if (currentToken == _ap_)
 	{
 		currentToken = readToken();
+		printf("abre parenteses\n");
 
 		if(!e0())
 		{
@@ -810,19 +844,26 @@ bool SynLexPortugol::e5(void)
 			exit(1);
 		}
 
-		if(currentToken == _fp_)return true;
+		if(currentToken == _fp_)
+		{
+			printf("fexa parenteses\n");
+
+			currentToken = readToken();
+			return true;
+		}
 		else
 			return false;
-
-
 	}
 
-	return false;
 }
+
+// problemas com matrizes
 bool SynLexPortugol::b(void)
 {
+	printf("b - %d\n",currentToken );
 	if(currentToken == _ac_)
 	{
+		printf("abre colchete\n");
 		currentToken = readToken();
 
 		if(!e0())
@@ -831,10 +872,21 @@ bool SynLexPortugol::b(void)
 			exit(1);
 		}
 
-		if(currentToken == _fc_)return true;
+		if(currentToken == _fc_)
+		{
+			printf("fexa colchete\n");
+			currentToken = readToken();
+
+			if(currentToken == _ac_)
+				return b();
+			else
+				return true;
+		}
 		else
 			return false;
 	}
-
-	return true;
+	else
+	{
+		return true;
+	}
 }

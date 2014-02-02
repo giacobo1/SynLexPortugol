@@ -5,11 +5,6 @@
 #define SYNLEXPORTUGOL_H
 #include "LexPortugol.h"
 
-// acho que tem q colocar um currenttoken e uma flag para os casos
-// de vazio..
-// talvez.. dentro de uma expressão possa haver atribuição..
-
-
 
 class SynLexPortugol : public LexPortugol
 {
